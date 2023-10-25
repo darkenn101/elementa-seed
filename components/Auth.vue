@@ -1,83 +1,69 @@
 <template>
-  <form class="row flex-center flex" @submit.prevent="registerWithEmail">
-    <div class="col-6 form-widget">
-      <h1 class="header">Supabase + Nuxt 3</h1>
-      <p class="description">Register with email and password</p>
-      <div>
+  <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-neutral">
+    <form class="card-body">
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Email</span>
+        </label>
         <input
-          class="inputField"
           type="email"
-          placeholder="Your email"
+          placeholder="email"
+          class="input input-bordered"
+          required
           v-model="email"
         />
       </div>
-      <div>
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Password</span>
+        </label>
         <input
-          class="inputField"
           type="password"
-          placeholder="Your password"
+          placeholder="password"
+          class="input input-bordered"
           v-model="password"
+          required
         />
+        <label class="label">
+          <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
+        </label>
       </div>
-      <div>
-        <input
-          type="submit"
-          class="button block"
-          :value="loading ? 'Loading' : 'register'"
-          :disabled="loading"
-        />
+      <div class="form-control mt-6 align-right">
+        <div class="join flex justify-end">
+          <button class="btn btn-primary join-item" @click.prevent="signInWithEmail">
+            Sign In
+          </button>
+          <button class="btn btn-secondary join-item" @click.prevent="registerWithEmail">
+            Register
+          </button>
+        </div>
       </div>
-    </div>
-  </form>
-
-  <form class="row flex-center flex" @submit.prevent="signInWithEmail">
-    <div class="col-6 form-widget">
-      <h1 class="header">Supabase + Nuxt 3</h1>
-      <p class="description">Sign in with email and password</p>
-      <div>
-        <input
-          class="inputField"
-          type="email"
-          placeholder="Your email"
-          v-model="email"
-        />
+      <div class="alert alert-error mt-6" v-if="authError">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="stroke-current shrink-0 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span>Error! Invaild details.</span>
       </div>
-      <div>
-        <input
-          class="inputField"
-          type="password"
-          placeholder="Your password"
-          v-model="password"
-        />
-      </div>
-      <div>
-        <input
-          type="submit"
-          class="button block"
-          :value="loading ? 'Loading' : 'Login'"
-          :disabled="loading"
-        />
-      </div>
-    </div>
-  </form>
-
-  <div class="notes">
-    <ul>
-      <li>Update UI to have card with Login/Registration options toggle</li>
-      <li>
-        When Registration is done, show message to tell user to check email
-      </li>
-      <li>Use params to detect if sent from confirmation email</li>
-      <li>Redirect to account page on login</li>
-    </ul>
+    </form>
   </div>
 </template>
 <script setup>
 const supabase = useSupabaseClient()
 
 const loading = ref(false)
-const email = ref('')
+const email = ref('darkenn101@gmail.com')
 const password = ref('')
+const authError = ref(false)
 
 async function registerWithEmail() {
   loading.value = true
@@ -87,8 +73,15 @@ async function registerWithEmail() {
   })
   if (error) {
     console.log('error', error)
+    // TODO: handle error state
+    authError.value = true
+
+    setTimeout(() => {
+      authError.value = false
+    }, 3000)
   } else {
     console.log('data', data)
+    navigateTo('/profile')
   }
   loading.value = false
 }
@@ -101,8 +94,14 @@ async function signInWithEmail() {
   })
   if (error) {
     console.log('error', error)
+
+    authError.value = true
+    setTimeout(() => {
+      authError.value = false
+    }, 3000)
   } else {
     console.log('data', data)
+    navigateTo('/profile')
   }
   loading.value = false
 }
