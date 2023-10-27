@@ -1,22 +1,55 @@
 <template>
   <form class="form-widget" @submit.prevent="updateProfile">
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="text" :value="user.email" disabled />
+    <div class="form-control w-full max-w-xl">
+      <label class="label">
+        <span class="label-text">Email</span>
+      </label>
+      <input
+        class="input input-bordered w-full max-w-xs"
+        id="email"
+        type="text"
+        :value="user.email"
+        disabled
+      />
     </div>
-    <div>
-      <label for="username">Username</label>
-      <input id="username" type="text" v-model="username" />
+
+    <div class="form-control w-full max-w-xl">
+      <label class="label">
+        <span class="label-text">Username</span>
+      </label>
+
+      <input
+        class="input input-bordered w-full max-w-sm"
+        id="username"
+        type="text"
+        v-model="username"
+      />
     </div>
-    <div>
-      <label for="website">Website</label>
-      <input id="website" type="url" v-model="website" />
+
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">Username</span>
+      </label>
+
+      <input
+        class="input input-bordered w-full max-w-xs"
+        id="username"
+        type="text"
+        v-model="username"
+      />
+
+      <input
+        class="input input-bordered w-full max-w-xs"
+        id="website"
+        type="url"
+        v-model="website"
+      />
     </div>
 
     <div>
       <input
         type="submit"
-        class="button primary block"
+        class="btn btn-primary"
         :value="loading ? 'Loading ...' : 'Update'"
         :disabled="loading"
       />
@@ -25,16 +58,8 @@
   <br />
   <br />
   <div>
-    <button class="button block" @click="signOut" :disabled="loading">
-      Sign Out
-    </button>
+    <button class="btn btn-link" @click="signOut" :disabled="loading">Sign Out</button>
   </div>
-
-  <!-- <div>
-    User:
-    <br />
-    <pre>{{ user }}</pre>
-  </div> -->
 </template>
 
 <script setup>
@@ -100,6 +125,14 @@ async function signOut() {
 }
 
 definePageMeta({
-  middleware: 'auth'
+  middleware: 'auth',
+  layout: 'dashboard'
 })
 </script>
+
+<style lang="scss">
+.drawer-side {
+  min-height: calc(100vh - 206px);
+  height: auto;
+}
+</style>
